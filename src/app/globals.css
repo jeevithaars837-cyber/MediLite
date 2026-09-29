@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --bg-primary: #04101e;
+  --bg-secondary: #08213e;
+  --card-bg: rgba(12, 38, 70, 0.7);
+  --text-primary: #f0f7ff;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --brand-color: #0c8ce9;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Low Data Mode CSS rules (§8) */
+html[data-low-data] *,
+html[data-low-data] *::before,
+html[data-low-data] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Accessibility focus ring */
+*:focus-visible {
+  outline: 2px solid #36a8f8;
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
