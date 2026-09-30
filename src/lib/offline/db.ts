@@ -22,9 +22,12 @@ class CareSyncDatabase extends Dexie {
       submissions: 'clientSubmissionId, userId, syncState, createdAt',
       images: 'clientImageId, clientSubmissionId',
       outbox: 'id, userId, status, nextAttemptAt, createdAt',
-      remote: 'id, userId, updatedAt',
+      remote: 'id, userId, client_submission_id, updatedAt',
       remoteMessages: 'id, consultationId, createdAt',
       meta: 'key',
+    });
+    this.version(2).stores({
+      remote: 'id, userId, client_submission_id, updatedAt',
     });
   }
 }

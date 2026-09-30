@@ -1,7 +1,7 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/offline/db';
 import { syncEngine } from '@/lib/sync/engine';
@@ -10,19 +10,51 @@ import { createClient } from '@/lib/supabase/client';
 import { ArrowLeft, Send, AlertTriangle, ShieldCheck, Image as ImageIcon, MessageSquare, CheckCircle } from 'lucide-react';
 import { strings } from '@/lib/i18n/strings';
 
-export default function PatientConsultationDetailPage({ params }: { params: Promise<{ clientSubmissionId: string }> }) {
-  const { clientSubmissionId } = use(params);
+function SafeThumbnail({ blob, onClick }: { blob?: Blob; onClick: (url: string) => void }) {
+  const [url, setUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!blob || !(blob instanceof Blob)) return;
+    const objectUrl = URL.createObjectURL(blob);
+    setUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [blob]);
+
+  if (!url) return null;
+
+  return (
+    <div
+      onClick={() => onClick(url)}
+      className="w-20 h-20 bg-slate-950 rounded-xl overflow-hidden border border-slate-700 cursor-pointer hover:border-brand-400 transition-colors"
+    >
+      <img src={url} alt="Thumb" className="w-full h-full object-cover" />
+    </div>
+  );
+}
+
+export default function PatientConsultationDetailPage({ params }: { params?: Promise<{ clientSubmissionId: string }> }) {
+  const routeParams = useParams();
+  const clientSubmissionId = (routeParams?.clientSubmissionId as string) || '';
   const router = useRouter();
 
   const [replyText, setReplyText] = useState('');
   const [isSendingReply, setIsSendingReply] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // Live queries from Dexie
-  const submission = useLiveQuery(() => db.submissions.get(clientSubmissionId), [clientSubmissionId]);
-  const images = useLiveQuery(() => db.images.where('clientSubmissionId').equals(clientSubmissionId).toArray(), [clientSubmissionId]) || [];
+  // Live queries from Dexie (safely guarded)
+  const submission = useLiveQuery(
+    () => (clientSubmissionId ? db.submissions.get(clientSubmissionId) : undefined),
+    [clientSubmissionId]
+  );
+  const images = useLiveQuery(
+    () => (clientSubmissionId ? db.images.where('clientSubmissionId').equals(clientSubmissionId).toArray() : []),
+    [clientSubmissionId]
+  ) || [];
   
-  const remoteCons = useLiveQuery(() => db.remote.where('client_submission_id').equals(clientSubmissionId).first(), [clientSubmissionId]);
+  const remoteCons = useLiveQuery(
+    () => (clientSubmissionId ? db.remote.filter((r) => r.client_submission_id === clientSubmissionId).first() : undefined),
+    [clientSubmissionId]
+  );
   const remoteMsgs = useLiveQuery(
     () => (remoteCons?.id ? db.remoteMessages.where('consultationId').equals(remoteCons.id).toArray() : []),
     [remoteCons?.id]
@@ -159,18 +191,13 @@ export default function PatientConsultationDetailPage({ params }: { params: Prom
               <ImageIcon className="w-3.5 h-3.5 text-brand-400" /> Attached Photos ({images.length})
             </h4>
             <div className="flex flex-wrap gap-3">
-              {images.map((img) => {
-                const url = URL.createObjectURL(img.thumbBlob);
-                return (
-                  <div
-                    key={img.clientImageId}
-                    onClick={() => setSelectedImage(url)}
-                    className="w-20 h-20 bg-slate-950 rounded-xl overflow-hidden border border-slate-700 cursor-pointer hover:border-brand-400 transition-colors"
-                  >
-                    <img src={url} alt="Thumb" className="w-full h-full object-cover" />
-                  </div>
-                );
-              })}
+              {images.map((img) => (
+                <SafeThumbnail
+                  key={img.clientImageId}
+                  blob={img.thumbBlob}
+                  onClick={(url) => setSelectedImage(url)}
+                />
+              ))}
             </div>
           </div>
         )}

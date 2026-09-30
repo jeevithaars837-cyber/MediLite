@@ -1,14 +1,15 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Consultation, ConsultationImage, Message } from '@/types';
 import { ArrowLeft, UserCheck, Send, AlertTriangle, CheckCircle, Lock, ShieldCheck, Image as ImageIcon, MessageSquare } from 'lucide-react';
 import { strings } from '@/lib/i18n/strings';
 
-export default function DoctorCaseReviewPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function DoctorCaseReviewPage({ params }: { params?: Promise<{ id: string }> }) {
+  const routeParams = useParams();
+  const id = (routeParams?.id as string) || '';
   const router = useRouter();
 
   const [consultation, setConsultation] = useState<Consultation | null>(null);
