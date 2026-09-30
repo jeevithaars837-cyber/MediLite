@@ -2,15 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --bg-primary: #04101e;
-  --bg-secondary: #08213e;
-  --card-bg: rgba(12, 38, 70, 0.7);
-  --text-primary: #f0f7ff;
-  --text-secondary: #94a3b8;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --brand-color: #0c8ce9;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --card-bg: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --brand-color: #2563eb;
 }
 
 body {
@@ -21,9 +23,10 @@ body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Low Data Mode CSS rules (§8) */
+/* Low Data Mode CSS rules */
 html[data-low-data] *,
 html[data-low-data] *::before,
 html[data-low-data] *::after {
@@ -33,7 +36,7 @@ html[data-low-data] *::after {
 
 /* Accessibility focus ring */
 *:focus-visible {
-  outline: 2px solid #36a8f8;
+  outline: 2px solid #2563eb;
   outline-offset: 2px;
 }
 
@@ -43,9 +46,20 @@ html[data-low-data] *::after {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: #cbd5e1;
   border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Card base */
+.card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
 }

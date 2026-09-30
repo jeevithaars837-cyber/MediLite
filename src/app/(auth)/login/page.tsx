@@ -15,7 +15,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Check if session exists (even offline)
     const supabase = createClient();
     supabase.auth.getSession().then(({ data }) => {
       if (data?.session) {
@@ -63,79 +62,82 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col justify-center items-center px-4 py-8">
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-teal-400 items-center justify-center font-bold text-white text-xl shadow-xl shadow-brand-500/20 mb-1">
+        <div className="text-center space-y-3">
+          <div className="inline-flex w-14 h-14 rounded-2xl bg-blue-600 items-center justify-center font-bold text-white text-xl shadow-blue mb-1">
             CS
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-100">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             Welcome to CareSync
           </h1>
-          <p className="text-xs text-slate-400 max-w-xs mx-auto">
+          <p className="text-sm text-slate-500 max-w-xs mx-auto leading-relaxed">
             {strings.app.tagline}
           </p>
         </div>
 
-        {/* Login Form Card */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-xl space-y-4">
+        {/* Login Card */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card-md space-y-4">
           {error && (
-            <div className="p-3 bg-rose-950/80 border border-rose-800 rounded-xl text-rose-200 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
                   type="email"
+                  id="login-email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="patient@example.com"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 pl-9 pr-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-brand-500 focus:outline-none transition-colors"
+                  placeholder="you@example.com"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">
                 Password
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
                   type="password"
+                  id="login-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2.5 pl-9 pr-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-brand-500 focus:outline-none transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all"
                 />
               </div>
             </div>
 
             <button
               type="submit"
+              id="login-submit"
               disabled={loading}
-              className="w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+              className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-4 rounded-xl shadow-blue flex items-center justify-center gap-2 transition-all disabled:opacity-50"
             >
               <span>{loading ? 'Signing in…' : 'Sign In'}</span>
-              <ArrowRight className="w-4 h-4" />
+              {!loading && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
 
-          <div className="text-center pt-2 border-t border-slate-800/80">
-            <p className="text-xs text-slate-400">
-              Don't have a patient account?{' '}
-              <Link href="/register" className="text-brand-400 hover:text-brand-300 font-semibold underline underline-offset-4">
+          <div className="text-center pt-2 border-t border-slate-100">
+            <p className="text-sm text-slate-500">
+              Don&apos;t have a patient account?{' '}
+              <Link href="/register" className="text-blue-600 hover:text-blue-700 font-semibold">
                 Register here
               </Link>
             </p>
@@ -143,8 +145,8 @@ export default function LoginPage() {
         </div>
 
         {/* Safety Copy */}
-        <div className="text-center text-[11px] text-slate-500 flex items-center justify-center gap-1.5 px-4">
-          <ShieldCheck className="w-4 h-4 text-brand-500 shrink-0" />
+        <div className="text-center text-xs text-slate-400 flex items-center justify-center gap-1.5 px-4">
+          <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
           <span>{strings.safety.disclaimer}</span>
         </div>
       </div>

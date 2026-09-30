@@ -7,20 +7,19 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ syncState, serverStatus }: StatusBadgeProps) {
-  // If local sync state is not 'synced', local state takes priority
   if (syncState === 'queued') {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-amber-950/70 text-amber-300 border border-amber-800/80">
-        <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
-        <span>Saved on device — waiting for network</span>
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+        <CheckCircle2 className="w-3.5 h-3.5 text-amber-500" />
+        <span>Saved — waiting for network</span>
       </div>
     );
   }
 
   if (syncState === 'syncing') {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-brand-950/70 text-brand-300 border border-brand-800/80">
-        <RefreshCw className="w-3.5 h-3.5 animate-spin text-brand-400" />
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+        <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-500" />
         <span>Sending…</span>
       </div>
     );
@@ -28,17 +27,17 @@ export function StatusBadge({ syncState, serverStatus }: StatusBadgeProps) {
 
   if (syncState === 'retry_scheduled') {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-amber-950/80 text-amber-300 border border-amber-700/80">
-        <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-        <span>Couldn't send yet — retrying automatically</span>
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+        <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+        <span>Retrying automatically</span>
       </div>
     );
   }
 
   if (syncState === 'needs_login') {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-rose-950/80 text-rose-300 border border-rose-800">
-        <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-600 border border-red-200">
+        <AlertTriangle className="w-3.5 h-3.5 text-red-500" />
         <span>Sign in again to send</span>
       </div>
     );
@@ -46,32 +45,31 @@ export function StatusBadge({ syncState, serverStatus }: StatusBadgeProps) {
 
   if (syncState === 'failed_permanent') {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-rose-950/90 text-rose-200 border border-rose-700">
-        <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-600 border border-red-200">
+        <AlertTriangle className="w-3.5 h-3.5 text-red-500" />
         <span>Needs a change before sending</span>
       </div>
     );
   }
 
-  // Server status when synced
   switch (serverStatus) {
     case 'doctor_reviewing':
       return (
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-indigo-950/70 text-indigo-300 border border-indigo-800">
-          <Clock className="w-3.5 h-3.5 text-indigo-400" />
-          <span>Doctor is reviewing your request</span>
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+          <Clock className="w-3.5 h-3.5 text-blue-500" />
+          <span>Doctor reviewing</span>
         </div>
       );
     case 'doctor_replied':
       return (
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-950/80 text-emerald-300 border border-emerald-700">
-          <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <MessageSquare className="w-3.5 h-3.5 text-emerald-500" />
           <span>Doctor replied</span>
         </div>
       );
     case 'completed':
       return (
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
           <CheckCheck className="w-3.5 h-3.5 text-slate-400" />
           <span>Completed</span>
         </div>
@@ -79,9 +77,9 @@ export function StatusBadge({ syncState, serverStatus }: StatusBadgeProps) {
     case 'submitted':
     default:
       return (
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-teal-950/70 text-teal-300 border border-teal-800">
-          <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" />
-          <span>Sent — waiting for a doctor</span>
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+          <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />
+          <span>Sent — waiting for doctor</span>
         </div>
       );
   }

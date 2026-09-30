@@ -37,11 +37,13 @@ export default function HomePage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
-      <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-teal-500 animate-pulse flex items-center justify-center font-bold text-white mb-3 shadow-lg">
-        CS
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-12 h-12 rounded-2xl bg-blue-600 animate-pulse flex items-center justify-center font-bold text-white text-sm shadow-blue">
+          CS
+        </div>
+        <p className="text-sm text-slate-500 font-medium">Loading CareSync…</p>
       </div>
-      <p className="text-xs text-slate-400 font-medium">Loading CareSync…</p>
     </div>
   );
 }
